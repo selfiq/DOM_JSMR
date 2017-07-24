@@ -7,8 +7,32 @@ include ('connect.php'); //connect ke database
 <!DOCTYPE html>
 <html lang="en">
 <!-- head -->
-   <?php include 'templates/head.php' ?>
+<?php include 'templates/head.php' ?>
+<script type="text/javascript">
+$(document).ready(function()
+{
+$(".programkerja").change(function()
+{
+var id=$(this).val();
+var dataString = 'id='+ id;
+
+$.ajax
+({
+type: "POST",
+url: "subprogramlist.php",
+data: dataString,
+cache: false,
+success: function(html)
+{
+$(".subProgram").html(html);
+} 
+});
+
+});
+});
+</script>
 <!--/head-->
+
 
   <body class="nav-md">
     <div class="container body">
@@ -78,12 +102,25 @@ include ('connect.php'); //connect ke database
                     
                     <div class="clearfix"></div>
                   </div>
-				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-program">Tambah Program</button>
-				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-subprogram">Tambah Subprogram</button>
-				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-rkap">Tambah RKAP</button>
+				  
                   <div class="title_right">
-                    <div class="col-md-2 col-sm-2 col-xs-12 form-group pull-right top_search" style="margin-top:10px;">
-                      <div class="input-group">
+                    <div class="col-md-5 col-sm-5 col-xs-5 form-group pull-right top_search" style="margin-top:10px;">
+                      <div class="input-group buttonright" >
+                      <div class="btn-group  buttonrightfloat " >
+	                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="false">Primary <span class="caret"></span>
+	                    </button>
+	                    <ul role="menu" class="dropdown-menu">
+	                      <li><a data-toggle="modal" data-target=".bs-program">Tambah Program</a>
+	                      </li>
+	                      <li><a data-toggle="modal" data-target=".bs-subprogram" >Tambah Subprogram</a>
+	                      </li>
+	                      <li><a data-toggle="modal" data-target=".bs-rkap" >Tambah RKAP</a>
+	                      </li>
+	                      <li class="divider"></li>
+	                      <li><a href="#">Separated link</a>
+	                      </li>
+	                    </ul>
+	                    </div>
                         
                       </div>
                     </div>
@@ -111,18 +148,24 @@ include ('connect.php'); //connect ke database
                             </thead>
                             <tbody>
                             <?php 
-                                    $query = mysqli_query($connect, "SELECT * FROM mbeban ");
-                                    while($data = mysqli_fetch_array($query)){ ?>
+                                $listTW = mysqli_query($connect, "SELECT * FROM tw ");
+                                while($datalistTW = mysqli_fetch_array($listTW)){ 
+                                	$idpklist= $datalistTW['id_pk'];
+                                	$idspklist= $datalistTW['id_sp'];
+                            $dataprogramkerja = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_pk = '$idpklist'"));
+							$datasubprogramkerja= mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM sub_program WHERE id_sp = '$idspklist'"));	
+                                	?>
                               <tr>
-                                <td><?php echo $data['programKerja'] ?></td>
-                                <td><?php echo $data['subProgram'] ?></td>
-                                <td><?php echo $data['totalRKAP'] ?></td>
-                                <td><?php echo $data['totalStatus'] ?></td>
-                                <td><?php echo $data['totalRealisasi'] ?></td>
-                                <td><?php echo $data['tahun'] ?></td>                               
-                                <td><?php echo $data['rkap'] ?></td>
-                                <td><?php echo $data['status'] ?></td>
-                                <td><?php echo $data['realisasi'] ?></td>
+
+                                <td><?php echo $dataprogramkerja['nama_pk'] ?></td>
+                                <td><?php echo $datasubprogramkerja['nama_sp'] ?></td>
+                                <td><?php ?></td>
+                                <td><?php ?></td>
+                                <td><?php  ?></td>
+                                <td><?php echo $datalistTW['tahun'] ?></td>                               
+                                <td><?php echo $datalistTW['rkap'] ?></td>
+                                <td><?php echo $datalistTW['status_akhir'] ?></td>
+                                <td><?php echo $datalistTW['realisasi'] ?></td>
 
                               </tr>
                               <?php } ?>
@@ -156,29 +199,34 @@ include ('connect.php'); //connect ke database
 					  </button>
 					  <h4 class="modal-title" id="myModalLabel">Tambah Program</h4>
 					</div>
+
 					<div class="modal-body">
-					  <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+					<form action="tambahprogrambeban.php" method="post" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="ma">Nomor MA</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <input type="text" id="ma" required="required" class="form-control col-md-7 col-xs-12">
+							  <input name ="nomorMA"type="text" id="ma" required="required" class="form-control col-md-7 col-xs-12">
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <input type="text" id="programKerja" required="required" class="form-control col-md-7 col-xs-12">
+							  <input name ="programKerja" type="text" id="programKerja" required="required" class="form-control col-md-7 col-xs-12">
 							</div>
 						  </div>
-					  </form>
+					  
 					</div>
 					<div class="modal-footer">
 					  <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-					  <button type="button" class="btn btn-primary">Simpan</button>
+					  <button type="submit" class="btn btn-primary" name="tambah">Simpan</button>
 					</div>
+					 </form>
 				  </div>
+				 
 				</div>
 			</div>
+
+
 			<!-- Modal Tambah Subprogram -->
 			<div class="modal fade bs-subprogram" tabindex="-1" role="dialog" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
@@ -189,34 +237,42 @@ include ('connect.php'); //connect ke database
 					  <h4 class="modal-title" id="myModalLabel">Tambah Subprogram</h4>
 					</div>
 					<div class="modal-body">
-					  <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+					  <form action="tambahsubprogrambeban.php" method="post" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <select class="select2_single form-control" tabindex="-1">
+							  <select name ="programkerja" class="select2_single form-control" tabindex="-1">
+							 
 								<option></option>
-								<option value="AK">Alaska</option>
-								<option value="HI">Hawaii</option>
-								<option value="CA">California</option>
-								<option value="NV">Nevada</option>
+								<?php 
+                                    $programkerja = mysqli_query($connect, "SELECT * FROM program_kerja ");
+                                    while($dataprogram = mysqli_fetch_array($programkerja)){ 
+                                ?> 
+								<option  value="<?php echo $dataprogram['nama_pk'];?>"><?php echo $dataprogram['nama_pk'];?></option>
+								
+								<?php }?>
 							  </select>
 							</div>
-						  </div>
+						   </div>
+
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="subProgram">Subrogram Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <input type="text" id="subProgram" required="required" class="form-control col-md-7 col-xs-12">
+							  <input name ="subprogramkerja" type="text" id="subProgram" required="required" class="form-control col-md-7 col-xs-12">
 							</div>
 						  </div>
-					  </form>
+					 
 					</div>
 					<div class="modal-footer">
 					  <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-					  <button type="button" class="btn btn-primary">Simpan</button>
+					  <button type="submit" class="btn btn-primary" name="tambah">Simpan</button>
 					</div>
+					</form>
 				  </div>
 				</div>
 			</div>
+
+
 			<!-- Modal Tambah RKAP -->
 			<div class="modal fade bs-rkap" tabindex="-1" role="dialog" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
@@ -227,31 +283,45 @@ include ('connect.php'); //connect ke database
 					  <h4 class="modal-title" id="myModalLabel">Tambah RKAP</h4>
 					</div>
 					<div class="modal-body">
-					  <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+					  <form action="tambahrkapbeban.php" method="post" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <select class="select2_single form-control" tabindex="-1">
-								<option></option>
-								<option value="AK">Alaska</option>
-								<option value="HI">Hawaii</option>
-								<option value="CA">California</option>
-								<option value="NV">Nevada</option>
+							  <select  id="programKerjaList" name ="programkerja" class="select2_single form-control" tabindex="-1" onChange="getSubProgram(this.value);" >
+								<option></option>								
+								<?php 
+                                    $programkerja = mysqli_query($connect, "SELECT * FROM program_kerja ");
+                                    while($dataprogram = mysqli_fetch_array($programkerja)){ 
+                                ?> 
+								<option  value="<?php echo $dataprogram['id_pk'];?>" ><?php echo $dataprogram['nama_pk'];?></option>
+								
+								<?php 
+									}
+								?>
 							  </select>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="subProgram">Subprogram Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <select class="select2_single form-control" tabindex="-1">
+							  <select id="subProgramList" name="subProgram" class="select2_single form-control" tabindex="-1">
 								<option></option>
-								<option value="AK">Alaska</option>
-								<option value="HI">Hawaii</option>
-								<option value="CA">California</option>
-								<option value="NV">Nevada</option>
+								<?php if (isset($_GET["programkerja"])) {
+
+								$idpk = $_GET["programkerja"]; 
+
+								?>
+								<?php while($datasubprogram = mysqli_fetch_array($mysqli_query($connect, "SELECT * FROM sub_program WHERE id_pk = '$idpk'")))
+										{ 
+								?>
+					                <option><?php print ($datasubprogram['nama_sp']); ?></option>
+					            <?php 
+					            		}} 
+					            ?>
 							  </select>
 							</div>
 						  </div>
+
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="status_tw">Triwulan</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
@@ -311,7 +381,7 @@ include ('connect.php'); //connect ke database
 					</div>
 					<div class="modal-footer">
 					  <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-					  <button type="button" class="btn btn-primary">Simpan</button>
+					  <button type="submit" class="btn btn-primary">Simpan</button>
 					</div>
 				  </div>
 				</div>
@@ -322,6 +392,17 @@ include ('connect.php'); //connect ke database
 .table th {
    vertical-align: middle ; text-align: center ;"
 }
+.buttonright {
+  width:60%;
+  display:inline;
+  overflow: auto;
+  white-space: nowrap;
+  margin:0px auto;
+}
+.buttonrightfloat {
+  float:right;
+  margin-right: 10px;
+}
 </style>
         <!-- footer content -->
         <?php include 'templates/footer.php' ?>
@@ -330,14 +411,8 @@ include ('connect.php'); //connect ke database
     </div>
 <!-- scripts -->
 <?php include 'templates/scripts.php' ?>
-<script>
-  
-    $('#myDatepicker2').datetimepicker({
-        format: 'DD.MM.YYYY'
-    });
-    
-    
-</script>
+
+
 <!-- /scripts -->
   </body>
 </html>
