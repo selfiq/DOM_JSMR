@@ -22,8 +22,8 @@
     <link href="build/css/custom.min.css" rel="stylesheet">
   </head>
 
-  <body class="login">
-    <div>
+  <body class="login" >
+    <div
       <a class="hiddenanchor" id="signup"></a>
       <a class="hiddenanchor" id="signin"></a>
 
@@ -40,13 +40,13 @@
                 <input type="password" name ="password" class="form-control" placeholder="Password" required="" />
               </div>
               <div>
-                <input style="float:none;margin-left:0px;" class="btn btn-default submit" value ="Log in" type="submit">                
+                <input style="float:none;margin-left:0px;" class="btn btn-default submit" value ="Log in" type="submit">
               </div>
 
               <div class="clearfix"></div>
 
               <div class="separator">
-                
+
 
                 <div class="clearfix"></div>
                 <br />
@@ -62,7 +62,7 @@
           </section>
         </div>
 
-        
+
       </div>
     </div>
   </body>
