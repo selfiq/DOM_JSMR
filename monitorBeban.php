@@ -92,7 +92,9 @@ include ('connect.php'); //connect ke database
 	                      </li>
 	                      <li><a data-toggle="modal" data-target=".bs-subprogram" >Tambah Subprogram</a>
 	                      </li>
-	                      <li><a data-toggle="modal" data-target=".bs-rkap" >Tambah RKAP</a>
+						  <li><a data-toggle="modal" data-target=".bs-rencana" >Tambah Rencana</a>
+	                      </li>
+	                      <li><a data-toggle="modal" data-target=".bs-realisasi" >Tambah Realisasi</a>
 	                      </li>
 	                      <li class="divider"></li>
 	                      <li><a href="#">Separated link</a>
@@ -126,10 +128,10 @@ include ('connect.php'); //connect ke database
                             </thead>
                             <tbody>
                             <?php 
-                                $listTW = mysqli_query($connect, "SELECT * FROM tw ");
+                                $listTW = mysqli_query($connect, "SELECT * FROM tw_rc, sub_program WHERE sub_program.id_sp = tw_rc.id_sp");
                                 while($datalistTW = mysqli_fetch_array($listTW)){ 
                                 	$idpklist= $datalistTW['id_pk'];
-                                	$idspklist= $datalistTW['id_sp'];
+									$idspklist= $datalistTW['id_sp'];
                             $dataprogramkerja = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_pk = '$idpklist'"));
 							$datasubprogramkerja= mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM sub_program WHERE id_sp = '$idspklist'"));	
                                 	?>
@@ -142,8 +144,8 @@ include ('connect.php'); //connect ke database
                                 <td><?php  ?></td>
                                 <td><?php echo $datalistTW['tahun'] ?></td>                               
                                 <td><?php echo $datalistTW['rkap'] ?></td>
-                                <td><?php echo $datalistTW['status_akhir'] ?></td>
-                                <td><?php echo $datalistTW['realisasi'] ?></td>
+                                <td><?php echo $datalistTW['stat_akhirrc'] ?></td>
+                                <td><?php echo $datalistTW['realisasi_rc'] ?></td>
 
                               </tr>
                               <?php } ?>
@@ -249,19 +251,18 @@ include ('connect.php'); //connect ke database
 				  </div>
 				</div>
 			</div>
-
-
-			<!-- Modal Tambah RKAP -->
-			<div class="modal fade bs-rkap" tabindex="-1" role="dialog" aria-hidden="true">
+			
+			<!-- Modal Tambah Rencana -->
+			<div class="modal fade bs-rencana" tabindex="-1" role="dialog" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 				  <div class="modal-content">
 					<div class="modal-header">
 					  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
 					  </button>
-					  <h4 class="modal-title" id="myModalLabel">Tambah RKAP</h4>
+					  <h4 class="modal-title" id="myModalLabel">Tambah Rencana</h4>
 					</div>
 					<div class="modal-body">
-					  <form action="tambahrkapbeban.php" method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+					  <form action="tambahrencanabeban.php" method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 						   <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
@@ -281,75 +282,163 @@ include ('connect.php'); //connect ke database
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="subProgram">Subprogram Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<select id="subprogram-list" name="subprogram" class="select2_single form-control" tabindex="-1">
+								<select name="subprogram" id="subprogram-list" class="select2_single form-control" tabindex="-1">
 									<option>---Pilih Subprogram Kerja---</option>
 								</select>
-							</div>
-						  </div>
-						  <div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="status_tw">Triwulan</label>
-							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <div class="radio">
-								<label>
-								  <input type="radio" value="1" name="status_tw"> TW 1
-								</label>
-							  </div>
-							  <div class="radio">
-								<label>
-								  <input type="radio" value="2" name="status_tw"> TW 2
-								</label>
-							  </div>
-							  <div class="radio">
-								<label>
-								  <input type="radio" value="3" name="status_tw"> TW 3
-								</label>
-							  </div>
-							  <div class="radio">
-								<label>
-								  <input type="radio" value="4" name="status_tw"> TW 4
-								</label>
-							  </div>
 							</div>
 						  </div>
 					      <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="tahun">Tahun</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
+							  <select name= "tahun" class="select2_single form-control" tabindex="-1">
+							    <option value="">---Pilih Tahun---</option>
+								<option value="2015">2015</option>
+								<option value="2016">2016</option>
+								<option value="2017">2017</option>
+								<option value="2018">2018</option>
+							  </select>
+							</div>
+						  </div><br>
+						  <div class="col-md-6">
+							  <h4>Triwulan 1</h4>
+							  <div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="rkap">RKAP</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+								  <input name= "rkap1" type="number" min="0" id="rkap" required="required" class="form-control col-md-7 col-xs-12">
+								</div>
+							  </div>
+						  </div>
+						  <div class="col-md-6">
+							  <h4>Triwulan 2</h4>
+							  <div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="rkap">RKAP</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+								  <input name= "rkap2" type="number" min="0" id="rkap" required="required" class="form-control col-md-7 col-xs-12">
+								</div>
+							  </div>
+						  </div>
+						  <div class="col-md-6">
+							  <h4>Triwulan 3</h4>
+							  <div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="rkap">RKAP</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+								  <input name= "rkap3" type="number" min="0" id="rkap" required="required" class="form-control col-md-7 col-xs-12">
+								</div>
+							  </div>
+						  </div>
+						  <div class="col-md-6">
+							  <h4>Triwulan 4</h4>
+							  <div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="rkap">RKAP</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+								  <input name= "rkap4" type="number" min="0" id="rkap" required="required" class="form-control col-md-7 col-xs-12">
+								</div>
+							  </div>
+						  </div>
+						</div>
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+						  <button type="submit" class="btn btn-primary" name="tambah">Simpan</button>
+						</div>
+					</form>
+				  </div>
+				</div>
+			</div>
+
+			<!-- Modal Tambah Realisasi -->
+			<div class="modal fade bs-realisasi" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+				  <div class="modal-content">
+					<div class="modal-header">
+					  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+					  </button>
+					  <h4 class="modal-title" id="myModalLabel">Tambah Realisasi</h4>
+					</div>
+					<div class="modal-body">
+					  <form action="tambahrealisasibeban.php" method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+						   <div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<select name="programkerja" id="program-list" class="select2_single form-control" tabindex="-1">
+										<option value="">---Pilih Program Kerja---</option>
+										<?php
+										if ($program_result->num_rows > 0) {
+									// output data of each row
+									while($row = $program_result->fetch_assoc()) {
+										?>
+										<option value="<?php echo $row["id_pk"]; ?>"><?php echo $row["nama_pk"]; ?></option>
+										<?php
+										}}?>
+								</select>
+							</div>
+						   </div>
+						  <div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="subProgram">Subprogram Kerja</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<select name="subprogram" id="subprogram-list" class="select2_single form-control" tabindex="-1">
+									<option>---Pilih Subprogram Kerja---</option>
+								</select>
+							</div>
+						  </div>
+						  <div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="tahun">Tahun</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
 							  <select class="select2_single form-control" tabindex="-1">
+								<option value="">---Pilih Tahun---</option>
 								<option value="2015">2015</option>
-								<option value="2015">2015</option>
-								<option value="2015">2015</option>
-								<option value="2015">2015</option>
+								<option value="2016">2016</option>
+								<option value="2017">2017</option>
+								<option value="2018">2018</option>
 							  </select>
 							</div>
 						  </div>
 						  <div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="rkap">RKAP</label>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="sttwrl">Triwulan</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <input type="number" min="0" id="rkap" required="required" class="form-control col-md-7 col-xs-12">
+							  <div class="radio">
+								<label>
+								  <input type="radio" value="1" name="sttwrl"> TW 1
+								</label>
+							  </div>
+							  <div class="radio">
+								<label>
+								  <input type="radio" value="2" name="sttwrl"> TW 2
+								</label>
+							  </div>
+							  <div class="radio">
+								<label>
+								  <input type="radio" value="3" name="sttwrl"> TW 3
+								</label>
+							  </div>
+							  <div class="radio">
+								<label>
+								  <input type="radio" value="4" name="sttwrl"> TW 4
+								</label>
+							  </div>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="status_akhir">Status Akhir</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <input type="number" min="0" id="status_akhir" required="required" class="form-control col-md-7 col-xs-12">
+							  <input name="stakhir" type="number" min="0" id="status_akhir" required="required" class="form-control col-md-7 col-xs-12">
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="realisasi">Realisasi</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <input type="number" min="0" id="realisasi" required="required" class="form-control col-md-7 col-xs-12">
+							  <input name="realisasi" type="number" min="0" id="realisasi" required="required" class="form-control col-md-7 col-xs-12">
 							</div>
 						  </div>
-						  
-					  </form>
-					</div>
-					<div class="modal-footer">
-					  <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-					  <button type="submit" class="btn btn-primary">Simpan</button>
-					</div>
+						</div>
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+						  <button type="submit" class="btn btn-primary" name="tambah">Simpan</button>
+						</div>
+					</form>
 				  </div>
 				</div>
 			</div>
+			
 		</div>
 
 <style>
@@ -388,6 +477,18 @@ $('#program-list').on('change', function(){
 		}
 	});
 });
+</script>
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#tw1").click(function (){
+            if ($("#tw1").prop("checked")){
+                $("#hidden1").show();
+            }else{
+                $("#hidden1").hide();
+            }              
+        });
+    });
 </script>
 
 
