@@ -1,7 +1,17 @@
-<?php  
+<?php
 include('akses.php'); //untuk memastikan dia sudah login
 include ('connect.php'); //connect ke database
 
+
+  $iduser = $_SESSION['id'];
+
+  //ambil informasi user id dan cabang id dari table user
+  $user = mysqli_fetch_array(mysqli_query($connect,"SELECT * FROM user WHERE id_user = '$iduser' "));
+  $idcabang = $user['id_cabang'];
+
+  //ambil informasi user id dan cabang id dari table cabang
+  $cabang =  mysqli_fetch_array(mysqli_query($connect,"SELECT nama_cabang FROM cabang WHERE id_cabang = '$idcabang'"));
+  $namacabang = $cabang['nama_cabang'];
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +26,7 @@ include ('connect.php'); //connect ke database
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="home.php" class="site_title"><i class="fa fa-group"></i> <span>Dashboard DOM</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -32,7 +42,7 @@ include ('connect.php'); //connect ke database
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->
-          
+
             <!-- /menu footer buttons -->
           </div>
         </div>
@@ -621,7 +631,7 @@ include ('connect.php'); //connect ke database
                   </div>
                 </div>
                 <!-- End to do list -->
-                
+
                 <!-- start of weather widget -->
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <div class="x_panel">
@@ -737,13 +747,13 @@ include ('connect.php'); //connect ke database
 
         <!-- footer content -->
         <?php include 'templates/footer.php' ?>
-        
+
         <!-- /footer content -->
       </div>
     </div>
 
 <!-- scripts -->
 <?php include 'templates/scripts.php' ?>
-<!-- /scripts -->	
+<!-- /scripts -->
   </body>
 </html>

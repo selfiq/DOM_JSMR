@@ -1,14 +1,14 @@
-<?php  
+<?php
 include('akses.php'); //untuk memastikan dia sudah login
 include ('connect.php'); //connect ke database
 
- 
+
   $iduser = $_SESSION['id'];
 
   //ambil informasi user id dan cabang id dari table user
   $user = mysqli_fetch_array(mysqli_query($connect,"SELECT * FROM user WHERE id_user = '$iduser' "));
   $idcabang = $user['id_cabang'];
-    
+
   //ambil informasi user id dan cabang id dari table cabang
   $cabang =  mysqli_fetch_array(mysqli_query($connect,"SELECT nama_cabang FROM cabang WHERE id_cabang = '$idcabang'"));
   $namacabang = $cabang['nama_cabang'];
@@ -30,7 +30,7 @@ include ('connect.php'); //connect ke database
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="home.php" class="site_title"><i class="fa fa-group"></i> <span>Dashboard DOM</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -79,7 +79,7 @@ include ('connect.php'); //connect ke database
                 <h3>Monitoring Beban</h3>
               </div>
 
-             
+
             </div>
 
             <div class="clearfix"></div>
@@ -89,10 +89,10 @@ include ('connect.php'); //connect ke database
                 <div class="x_panel">
                   <div class="x_title">
                     <h2><i class="fa fa-table"></i> Table <small>Data Beban Cabang <?php echo $namacabang; ?> </small></h2>
-                    
+
                     <div class="clearfix"></div>
                   </div>
-				  
+
                   <div class="title_right">
                     <div class="col-md-5 col-sm-5 col-xs-5 form-group pull-right top_search" style="margin-top:10px;">
                       <div class="input-group buttonright" >
@@ -108,10 +108,10 @@ include ('connect.php'); //connect ke database
 	                      </li>
 	                      <li><a data-toggle="modal" data-target=".bs-realisasi" >Tambah Realisasi</a>
 	                      </li>
-	                     
+
 	                    </ul>
 	                    </div>
-                        
+
                       </div>
                     </div>
                    </div>
@@ -120,7 +120,7 @@ include ('connect.php'); //connect ke database
                       <table id="datatable-keytable"  class="table table-striped table-bordered " class="centered">
                             <thead >
                               <tr >
-                              
+
                                 <th rowspan="2">Program Kerja</th>
                                 <th rowspan="2">Sub Program Kerja</th>
                                 <th rowspan="2">Total RKAP</th>
@@ -128,7 +128,7 @@ include ('connect.php'); //connect ke database
                                 <th rowspan="2">TOTAL Realisasi s.d TW </th>
                                 <th rowspan="2">Tahun </th>
                                 <th colspan="3">TW </th>
-                                
+
                               </tr>
                               <tr>
                                 <th>RKAP</th>
@@ -137,13 +137,13 @@ include ('connect.php'); //connect ke database
                               </tr>
                             </thead>
                             <tbody>
-                            <?php 
+                            <?php
                                 $listTW = mysqli_query($connect, "SELECT * FROM tw_rc, sub_program WHERE sub_program.id_sp = tw_rc.id_sp");
-                                while($datalistTW = mysqli_fetch_array($listTW)){ 
+                                while($datalistTW = mysqli_fetch_array($listTW)){
                                 	$idpklist= $datalistTW['id_pk'];
 									$idspklist= $datalistTW['id_sp'];
                             $dataprogramkerja = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_pk = '$idpklist'"));
-							$datasubprogramkerja= mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM sub_program WHERE id_sp = '$idspklist'"));	
+							$datasubprogramkerja= mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM sub_program WHERE id_sp = '$idspklist'"));
                                 	?>
                               <tr>
 
@@ -152,10 +152,10 @@ include ('connect.php'); //connect ke database
                                 <td><?php ?></td>
                                 <td><?php ?></td>
                                 <td><?php  ?></td>
-                                <td><?php echo $datalistTW['tahun'] ?></td>                               
+                                <td><?php echo $datalistTW['tahun'] ?></td>
                                 <td><?php echo $datalistTW['rkap'] ?></td>
-                                <td><?php echo $datalistTW['stat_akhirrc'] ?></td>
-                                <td><?php echo $datalistTW['realisasi_rc'] ?></td>
+                                <td><?php ?></td>
+                                <td><?php ?></td>
 
                               </tr>
                               <?php } ?>
@@ -168,7 +168,7 @@ include ('connect.php'); //connect ke database
               </div>
 
 
-              
+
               <div class="clearfix"></div>
 
 
@@ -178,7 +178,7 @@ include ('connect.php'); //connect ke database
           <div class="clearfix"></div>
         </div>
         <!-- /page content -->
-		
+
 		<div class="x_content">
 			<!-- Modal Tambah Program -->
 			<div class="modal fade bs-program" tabindex="-1" role="dialog" aria-hidden="true">
@@ -205,7 +205,7 @@ include ('connect.php'); //connect ke database
 							  <input name ="programKerja" type="text" id="programKerja" required="required" class="form-control col-md-7 col-xs-12">
 							</div>
 						  </div>
-					  
+
 					</div>
 					<div class="modal-footer">
 					  <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -213,7 +213,7 @@ include ('connect.php'); //connect ke database
 					</div>
 					 </form>
 				  </div>
-				 
+
 				</div>
 			</div>
 
@@ -232,19 +232,19 @@ include ('connect.php'); //connect ke database
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-                                
+
 							  <select name ="idprogramkerja" class="select2_single form-control" tabindex="-1">
-							 
+
 								<option></option>
-								<?php 
+								<?php
                                     $programkerja = mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_cabang ='$idcabang'");
-                                    while($dataprogram = mysqli_fetch_array($programkerja)){ 
-                                ?> 
+                                    while($dataprogram = mysqli_fetch_array($programkerja)){
+                                ?>
 								<option  value="<?php echo $dataprogram['id_pk'];?>"><?php echo $dataprogram['nama_pk'];?></option>
-                                  
+
 								<?php }?>
                                 <input name ="idcabang" type="text" id="idcabang" value="<?php echo $idcabang; ?>" hidden>
-                                    
+
 							  </select>
 							</div>
 						   </div>
@@ -255,7 +255,7 @@ include ('connect.php'); //connect ke database
 							  <input name ="subprogramkerja" type="text" id="subProgram" required="required" class="form-control col-md-7 col-xs-12">
 							</div>
 						  </div>
-					 
+
 					</div>
 					<div class="modal-footer">
 					  <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -265,7 +265,7 @@ include ('connect.php'); //connect ke database
 				  </div>
 				</div>
 			</div>
-			
+
 			<!-- Modal Tambah Rencana -->
 			<div class="modal fade bs-rencana" tabindex="-1" role="dialog" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
@@ -291,7 +291,7 @@ include ('connect.php'); //connect ke database
                                     <?php
                                         }
                                     }
-                                    
+
                                     ?>
 								</select>
 							</div>
@@ -457,7 +457,7 @@ include ('connect.php'); //connect ke database
 				  </div>
 				</div>
 			</div>
-			
+
 		</div>
 
 <style>
