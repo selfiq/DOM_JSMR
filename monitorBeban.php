@@ -137,25 +137,31 @@ include ('connect.php'); //connect ke database
                               </tr>
                             </thead>
                             <tbody>
-                            <?php
-                                $listTW = mysqli_query($connect, "SELECT * FROM tw_rc, sub_program WHERE sub_program.id_sp = tw_rc.id_sp");
-                                while($datalistTW = mysqli_fetch_array($listTW)){
-                                	$idpklist= $datalistTW['id_pk'];
-									$idspklist= $datalistTW['id_sp'];
-                            $dataprogramkerja = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_pk = '$idpklist'"));
-							$datasubprogramkerja= mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM sub_program WHERE id_sp = '$idspklist'"));
-                                	?>
+                            <?php 
+                            $listTW = mysqli_query($connect, "SELECT * FROM tw_rc, sub_program WHERE sub_program.id_sp = tw_rc.id_sp");
+                            while($datalistTW = mysqli_fetch_array($listTW)){ 
+								$idpklist= $datalistTW['id_pk'];
+								$idspklist= $datalistTW['id_sp'];
+								$tahun= $datalistTW['tahun'];
+								$jmlrkap = mysqli_query($connect, "SELECT * FROM tw_rc WHERE id_sp = '$idspklist' AND tahun = '$tahun'");
+								$qty= 0;
+								while ($num = mysqli_fetch_array($jmlrkap)) {
+									$qty += $num['rkap'];}
+								$datatwreal = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM tw_real WHERE id_sp = '$idspklist' AND stat_twrl = '1'"));
+								$dataprogramkerja = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_pk = '$idpklist'"));
+								$datasubprogramkerja= mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM sub_program WHERE id_sp = '$idspklist'"));	
+                            ?>
                               <tr>
 
                                 <td><?php echo $dataprogramkerja['nama_pk'] ?></td>
                                 <td><?php echo $datasubprogramkerja['nama_sp'] ?></td>
-                                <td><?php ?></td>
+                                <td><?php echo $qty;?></td>
                                 <td><?php ?></td>
                                 <td><?php  ?></td>
-                                <td><?php echo $datalistTW['tahun'] ?></td>
+                                <td><?php echo $datalistTW['tahun'] ?></td>                               
                                 <td><?php echo $datalistTW['rkap'] ?></td>
-                                <td><?php ?></td>
-                                <td><?php ?></td>
+                                <td><?php echo $datatwreal['stat_akhirrl'] ?></td>
+                                <td><?php echo $datatwreal['realisasi_rl'] ?></td>
 
                               </tr>
                               <?php } ?>
