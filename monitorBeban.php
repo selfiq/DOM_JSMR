@@ -1,9 +1,19 @@
 <?php  
 include('akses.php'); //untuk memastikan dia sudah login
 include ('connect.php'); //connect ke database
-  $program_result = $connect->query('select * from program_kerja');
-  $id = $_SESSION['id'];
-  
+
+ 
+  $iduser = $_SESSION['id'];
+
+  //ambil informasi user id dan cabang id dari table user
+  $user = mysqli_fetch_array(mysqli_query($connect,"SELECT * FROM user WHERE id_user = '$iduser' "));
+  $idcabang = $user['id_cabang'];
+    
+  //ambil informasi user id dan cabang id dari table cabang
+  $cabang =  mysqli_fetch_array(mysqli_query($connect,"SELECT nama_cabang FROM cabang WHERE id_cabang = '$idcabang'"));
+  $namacabang = $cabang['nama_cabang'];
+
+  $program_result = $connect-> query("SELECT * FROM program_kerja WHERE id_cabang = '$idcabang' ");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,7 +86,7 @@ include ('connect.php'); //connect ke database
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2><i class="fa fa-table"></i> Table <small>Data Beban</small></h2>
+                    <h2><i class="fa fa-table"></i> Table <small>Data Beban Cabang <?php echo $namacabang; ?> </small></h2>
                     
                     <div class="clearfix"></div>
                   </div>
@@ -107,7 +117,7 @@ include ('connect.php'); //connect ke database
                    </div>
                   <div class="x_content">
 
-                      <table id="datatable-fixed-header"  class="table table-striped table-bordered " class="centered">
+                      <table id="datatable-keytable"  class="table table-striped table-bordered " class="centered">
                             <thead >
                               <tr >
                               
@@ -182,6 +192,7 @@ include ('connect.php'); //connect ke database
 
 					<div class="modal-body">
 					<form action="tambahprogrambeban.php" method="post" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        <input name ="idcabang" type="text" id="idcabang" value="<?php echo $idcabang; ?>" hidden>
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="ma">Nomor MA</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
@@ -221,16 +232,19 @@ include ('connect.php'); //connect ke database
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <select name ="programkerja" class="select2_single form-control" tabindex="-1">
+                                
+							  <select name ="idprogramkerja" class="select2_single form-control" tabindex="-1">
 							 
 								<option></option>
 								<?php 
-                                    $programkerja = mysqli_query($connect, "SELECT * FROM program_kerja ");
+                                    $programkerja = mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_cabang ='$idcabang'");
                                     while($dataprogram = mysqli_fetch_array($programkerja)){ 
                                 ?> 
-								<option  value="<?php echo $dataprogram['nama_pk'];?>"><?php echo $dataprogram['nama_pk'];?></option>
-								
+								<option  value="<?php echo $dataprogram['id_pk'];?>"><?php echo $dataprogram['nama_pk'];?></option>
+                                  
 								<?php }?>
+                                <input name ="idcabang" type="text" id="idcabang" value="<?php echo $idcabang; ?>" hidden>
+                                    
 							  </select>
 							</div>
 						   </div>
@@ -267,15 +281,18 @@ include ('connect.php'); //connect ke database
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<select name="programkerja" id="program-list" class="select2_single form-control" tabindex="-1">
-										<option value="">---Pilih Program Kerja---</option>
-										<?php
-										if ($program_result->num_rows > 0) {
-									// output data of each row
-									while($row = $program_result->fetch_assoc()) {
-										?>
-										<option value="<?php echo $row["id_pk"]; ?>"><?php echo $row["nama_pk"]; ?></option>
-										<?php
-										}}?>
+                                    <option value="">---Pilih Program Kerja---</option>
+                                    <?php
+                                    if ($program_result->num_rows > 0) {
+                                        // output data of each row
+                                        while($row = $program_result->fetch_assoc()) {
+                                    ?>
+                                        <option value="<?php echo $row["id_pk"]; ?>"><?php echo $row["nama_pk"]; ?></option>
+                                    <?php
+                                        }
+                                    }
+                                    
+                                    ?>
 								</select>
 							</div>
 						   </div>
@@ -458,38 +475,15 @@ include ('connect.php'); //connect ke database
 }
 </style>
         <!-- footer content -->
-        <?php include 'templates/footer.php' ?>
+<?php include 'templates/footer.php' ?>
         <!-- /footer content -->
       </div>
     </div>
 <!-- scripts -->
 <?php include 'templates/scripts.php' ?>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script>
-$('#program-list').on('change', function(){
-	var id_pk = this.value;
-	$.ajax({
-		type: "POST",
-		url: "get_subprogram.php",
-		data:'id_pk='+id_pk,
-		success: function(result){
-			$("#subprogram-list").html(result);
-		}
-	});
-});
-</script>
-<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-<script>
-    $(document).ready(function(){
-        $("#tw1").click(function (){
-            if ($("#tw1").prop("checked")){
-                $("#hidden1").show();
-            }else{
-                $("#hidden1").hide();
-            }              
-        });
-    });
-</script>
+
+
+
 
 
 <!-- /scripts -->

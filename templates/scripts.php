@@ -57,4 +57,32 @@
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
+   
+    <!-- <script src="https://code.jquery.com/jquery-1.11.3.js"></script> -->
+    <script>
+        $(document).ready(function(){
+            $("#tw1").click(function (){
+                if ($("#tw1").prop("checked")){
+                    $("#hidden1").show();
+                }else{
+                    $("#hidden1").hide();
+                }              
+            });
+        });
+    </script>
+     <script>
+    $('#program-list').on('change', function(){
+        var id_pk = this.value;
+        $.ajax({
+            type: "POST",
+            url: "get_subprogram.php",
+            data:'id_pk='+id_pk,
+            success: function(result){
+                $("#subprogram-list").html(result);
+            }
+        });
+    });
+    </script>
     <?php ?>
