@@ -13,7 +13,9 @@ include ('connect.php'); //connect ke database
   $cabang =  mysqli_fetch_array(mysqli_query($connect,"SELECT nama_cabang FROM cabang WHERE id_cabang = '$idcabang'"));
   $namacabang = $cabang['nama_cabang'];
 
-  $program_result = $connect-> query("SELECT * FROM program_kerja WHERE id_cabang = '$idcabang' ");
+  $resultuntukrencana = $connect-> query("SELECT * FROM program_kerja WHERE id_cabang = '$idcabang' ");
+  $resultuntukrealisasi = $connect-> query("SELECT * FROM program_kerja WHERE id_cabang = '$idcabang' ");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,9 +97,9 @@ include ('connect.php'); //connect ke database
                     <div class="col-md-5 col-sm-5 col-xs-5 form-group pull-right top_search" style="margin-top:10px;">
                       <div class="input-group buttonright" >
                       <div class="btn-group  buttonrightfloat " >
-	                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="false">Primary <span class="caret"></span>
+	                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="false">  Tambah <span class="caret"></span>
 	                    </button>
-	                    <ul role="menu" class="dropdown-menu">
+	                    <ul role="menu" class="dropdown-menu pull-right">
 	                      <li><a data-toggle="modal" data-target=".bs-program">Tambah Program</a>
 	                      </li>
 	                      <li><a data-toggle="modal" data-target=".bs-subprogram" >Tambah Subprogram</a>
@@ -106,9 +108,7 @@ include ('connect.php'); //connect ke database
 	                      </li>
 	                      <li><a data-toggle="modal" data-target=".bs-realisasi" >Tambah Realisasi</a>
 	                      </li>
-	                      <li class="divider"></li>
-	                      <li><a href="#">Separated link</a>
-	                      </li>
+	                     
 	                    </ul>
 	                    </div>
                         
@@ -280,12 +280,12 @@ include ('connect.php'); //connect ke database
 						   <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<select name="programkerja" id="program-list" class="select2_single form-control" tabindex="-1">
+								<select name="programkerja" id="program-list1" class="select2_single form-control" tabindex="-1">
                                     <option value="">---Pilih Program Kerja---</option>
                                     <?php
-                                    if ($program_result->num_rows > 0) {
+                                    if ($resultuntukrencana->num_rows > 0) {
                                         // output data of each row
-                                        while($row = $program_result->fetch_assoc()) {
+                                        while($row = $resultuntukrencana->fetch_assoc()) {
                                     ?>
                                         <option value="<?php echo $row["id_pk"]; ?>"><?php echo $row["nama_pk"]; ?></option>
                                     <?php
@@ -299,6 +299,7 @@ include ('connect.php'); //connect ke database
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="subProgram">Subprogram Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
+							    <input name ="idcabang" type="text" id="idcabang" value="<?php echo $idcabang; ?>" hidden>
 								<select name="subprogram" id="subprogram-list" class="select2_single form-control" tabindex="-1">
 									<option>---Pilih Subprogram Kerja---</option>
 								</select>
@@ -372,18 +373,19 @@ include ('connect.php'); //connect ke database
 					  <h4 class="modal-title" id="myModalLabel">Tambah Realisasi</h4>
 					</div>
 					<div class="modal-body">
-					  <form action="tambahrealisasibeban.php" method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+					  <form action="tambahrealisasibeban.php" method="POST" id="demo-form2"  class="form-horizontal form-label-left">
 						   <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
+							<input name ="idcabang" type="text" id="idcabang" value="<?php echo $idcabang; ?>" hidden>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<select name="programkerja" id="program-list" class="select2_single form-control" tabindex="-1">
+								<select name="programkerja" id="program-list2" class="select2_single form-control" tabindex="-1">
 										<option value="">---Pilih Program Kerja---</option>
 										<?php
-										if ($program_result->num_rows > 0) {
-									// output data of each row
-									while($row = $program_result->fetch_assoc()) {
+										if ($resultuntukrealisasi->num_rows > 0) {
+											// output data of each row
+											while($row = $resultuntukrealisasi -> fetch_assoc()) {
 										?>
-										<option value="<?php echo $row["id_pk"]; ?>"><?php echo $row["nama_pk"]; ?></option>
+											<option value="<?php echo $row["id_pk"]; ?>"><?php echo $row["nama_pk"]; ?></option>
 										<?php
 										}}?>
 								</select>
@@ -392,7 +394,7 @@ include ('connect.php'); //connect ke database
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="subProgram">Subprogram Kerja</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<select name="subprogram" id="subprogram-list" class="select2_single form-control" tabindex="-1">
+								<select name="subprogram" id="subprogram-list2" class="select2_single form-control" tabindex="-1">
 									<option>---Pilih Subprogram Kerja---</option>
 								</select>
 							</div>
@@ -400,7 +402,7 @@ include ('connect.php'); //connect ke database
 						  <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="tahun">Tahun</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							  <select class="select2_single form-control" tabindex="-1">
+							  <select name="tahun" class="select2_single form-control" tabindex="-1">
 								<option value="">---Pilih Tahun---</option>
 								<option value="2015">2015</option>
 								<option value="2016">2016</option>

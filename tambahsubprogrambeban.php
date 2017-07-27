@@ -6,7 +6,7 @@
 		 	$id_pk= $_POST['idprogramkerja'];
 			$nama_subpk = $_POST['subprogramkerja'];
 		    $idcabang = $_POST['idcabang'];
-            echo $idcabang;
+           
 		//cek inputan double di database
 
 

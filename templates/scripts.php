@@ -73,7 +73,7 @@
         });
     </script>
      <script>
-    $('#program-list').on('change', function(){
+    $('#program-list1').on('change', function(){
         var id_pk = this.value;
         $.ajax({
             type: "POST",
@@ -81,6 +81,20 @@
             data:'id_pk='+id_pk,
             success: function(result){
                 $("#subprogram-list").html(result);
+            }
+        });
+    });
+    </script>
+	
+     <script>
+    $('#program-list2').on('change', function(){
+        var id_pk = this.value;
+        $.ajax({
+            type: "POST",
+            url: "get_subprogram.php",
+            data:'id_pk='+id_pk,
+            success: function(result){
+                $("#subprogram-list2").html(result);
             }
         });
     });
