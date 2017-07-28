@@ -3,7 +3,7 @@ include('akses.php'); //untuk memastikan dia sudah login
 include ('connect.php'); //connect ke database
 
 
-  $iduser = $_SESSION['id'];
+  $iduser = $_SESSION['id_user'];
 
   //ambil informasi user id dan cabang id dari table user
   $user = mysqli_fetch_array(mysqli_query($connect,"SELECT * FROM user WHERE id_user = '$iduser' "));
@@ -134,9 +134,9 @@ include ('connect.php'); //connect ke database
 						  </tr>
 						</thead>
 						<tbody>
-							<?php 
+							<?php
 							$listTW = mysqli_query($connect, "SELECT * FROM tw_real, sub_program WHERE sub_program.id_sp = tw_real.id_sp AND stat_twrl ='1'");
-							while($datalistTW = mysqli_fetch_array($listTW)){ 
+							while($datalistTW = mysqli_fetch_array($listTW)){
 								$idpklist= $datalistTW['id_pk'];
 								$idspklist= $datalistTW['id_sp'];
 								$tahun= $datalistTW['tahun'];
@@ -170,7 +170,7 @@ include ('connect.php'); //connect ke database
 							<td><?php echo $datatwreal4['stat_akhir'] ?></td>
 							<td><?php echo $datatwreal4['realisasi'] ?></td>
 						  </tr>
-						<?php }?>					
+						<?php }?>
 						</tbody>
 					  </table>
                   </div>

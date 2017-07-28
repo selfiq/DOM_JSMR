@@ -3,7 +3,7 @@ include('akses.php'); //untuk memastikan dia sudah login
 include ('connect.php'); //connect ke database
 
 
-  $iduser = $_SESSION['id'];
+  $iduser = $_SESSION['id_user'];
 
   //ambil informasi user id dan cabang id dari table user
   $user = mysqli_fetch_array(mysqli_query($connect,"SELECT * FROM user WHERE id_user = '$iduser' "));
@@ -134,9 +134,9 @@ include ('connect.php'); //connect ke database
                               </tr>
                             </thead>
                             <tbody>
-                            <?php 
+                            <?php
                             $listTW = mysqli_query($connect, "SELECT * FROM tw_rc, sub_program WHERE sub_program.id_sp = tw_rc.id_sp AND stat_twrc = '1'");
-                            while($datalistTW = mysqli_fetch_array($listTW)){ 
+                            while($datalistTW = mysqli_fetch_array($listTW)){
 								$idpklist = $datalistTW['id_pk'];
 								$idspklist = $datalistTW['id_sp'];
 								$tahun= $datalistTW['tahun'];
@@ -149,13 +149,13 @@ include ('connect.php'); //connect ke database
 								$datatwrc1 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM tw_rc WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrc = '1'"));
 								$datatwrc2 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM tw_rc WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrc = '2'"));
 								$datatwrc3 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM tw_rc WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrc = '3'"));
-								$datatwrc4 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM tw_rc WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrc = '4'"));	
+								$datatwrc4 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM tw_rc WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrc = '4'"));
                             ?>
                               <tr>
                                 <td><?php echo $dataprogramkerja['nama_pk'] ?></td>
                                 <td><?php echo $datasubprogramkerja['nama_sp'] ?></td>
                                 <td><?php echo $qty;?></td>
-                                <td><?php echo $datalistTW['tahun'] ?></td>                               
+                                <td><?php echo $datalistTW['tahun'] ?></td>
                                 <td><?php echo $datatwrc1['rkap'] ?></td>
                                 <td><?php echo $datatwrc2['rkap'] ?></td>
                                 <td><?php echo $datatwrc3['rkap'] ?></td>

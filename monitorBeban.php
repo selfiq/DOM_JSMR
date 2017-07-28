@@ -88,7 +88,7 @@ include ('connect.php'); //connect ke database
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2><i class="fa fa-table"></i> Table <small>Data Beban Cabang <?php echo $namacabang; ?> </small></h2>
+                    <h2><i class="fa fa-table" value="<?php echo $idcabang; ?>" hidden></i> Table <small>Data Beban Cabang <?php echo $namacabang; ?> </small></h2>
 
                     <div class="clearfix"></div>
                   </div>
@@ -137,9 +137,9 @@ include ('connect.php'); //connect ke database
                               </tr>
                             </thead>
                             <tbody>
-                            <?php 
+                            <?php
                             $listTW = mysqli_query($connect, "SELECT * FROM tw_rc, sub_program WHERE sub_program.id_sp = tw_rc.id_sp");
-                            while($datalistTW = mysqli_fetch_array($listTW)){ 
+                            while($datalistTW = mysqli_fetch_array($listTW)){
 								$idpklist= $datalistTW['id_pk'];
 								$idspklist= $datalistTW['id_sp'];
 								$tahun= $datalistTW['tahun'];
@@ -148,8 +148,8 @@ include ('connect.php'); //connect ke database
 								while ($num = mysqli_fetch_array($jmlrkap)) {
 									$qty += $num['rkap'];}
 								$datatwreal = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM tw_real WHERE id_sp = '$idspklist' AND stat_twrl = '1'"));
-								$dataprogramkerja = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_pk = '$idpklist'"));
-								$datasubprogramkerja= mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM sub_program WHERE id_sp = '$idspklist'"));	
+								$dataprogramkerja = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_pk = '$idpklist' AND id_cabang='$idcabang'"));
+								$datasubprogramkerja= mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM sub_program WHERE id_sp = '$idspklist'"));
                             ?>
                               <tr>
 
@@ -158,7 +158,7 @@ include ('connect.php'); //connect ke database
                                 <td><?php echo $qty;?></td>
                                 <td><?php ?></td>
                                 <td><?php  ?></td>
-                                <td><?php echo $datalistTW['tahun'] ?></td>                               
+                                <td><?php echo $datalistTW['tahun'] ?></td>
                                 <td><?php echo $datalistTW['rkap'] ?></td>
                                 <td><?php echo $datatwreal['stat_akhirrl'] ?></td>
                                 <td><?php echo $datatwreal['realisasi_rl'] ?></td>
