@@ -11,11 +11,11 @@ include ('connect.php'); //connect ke database
 ?>
 
  <div class="profile clearfix">
-    <div class="profile_pic">
-        <img src="images/dp.jpg" alt="..." class="img-circle profile_img">
-    </div>
-        <div class="profile_info">
-            <span>Welcome, <?php echo $user['username']?></span>
-            <h2>Cabang : <?php echo $namacabang ?></h2>
-        </div>
-</div>
+   <div class="profile_pic">
+     <img src="images/dp.jpg" alt="..." class="img-circle profile_img">
+   </div>
+   <div class="profile_info">
+     <span>Welcome, <?php echo $user['username']?></span>
+     <h2>Cabang : <?php echo $namacabang ?></h2>
+   </div>
+ </div>

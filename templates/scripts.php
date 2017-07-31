@@ -15,7 +15,7 @@
     <script src="vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
     <script src="vendors/iCheck/icheck.min.js"></script>
-   
+
     <!-- Skycons -->
     <script src="vendors/skycons/skycons.js"></script>
     <!-- Flot -->
@@ -59,7 +59,7 @@
     <script src="build/js/custom.min.js"></script>
 
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
-   
+
     <!-- <script src="https://code.jquery.com/jquery-1.11.3.js"></script> -->
     <script>
         $(document).ready(function(){
@@ -68,11 +68,13 @@
                     $("#hidden1").show();
                 }else{
                     $("#hidden1").hide();
-                }              
+                }
             });
         });
     </script>
-     <script>
+
+    <!-- dependent dropdown list sub-program -->
+    <script>
     $('#program-list1').on('change', function(){
         var id_pk = this.value;
         $.ajax({
@@ -85,9 +87,10 @@
         });
     });
     </script>
-	
+
+     <!-- dependent dropdown list sub-program -->
      <script>
-    $('#program-list2').on('change', function(){
+     $('#program-list2').on('change', function(){
         var id_pk = this.value;
         $.ajax({
             type: "POST",
@@ -97,6 +100,6 @@
                 $("#subprogram-list2").html(result);
             }
         });
-    });
-    </script>
+      });
+      </script>
     <?php ?>
