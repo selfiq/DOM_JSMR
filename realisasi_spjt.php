@@ -227,7 +227,7 @@ include ('connect.php'); //connect ke database
 							</div>
 						  </div>
 						  <div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="subProgram">Subprogram Kerja</label>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="jenis">Jenis</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">							   
 								<select required="required" name="jenis" id="jenis-list" class="select2_single form-control" tabindex="-1">
 									<option>Pilih Jenis</option>
