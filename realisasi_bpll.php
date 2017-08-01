@@ -135,7 +135,7 @@ include ('connect.php'); //connect ke database
 						</thead>
 						<tbody>
 							<?php
-							$listTW = mysqli_query($connect, "SELECT * FROM beban_realisasi, sub_program WHERE sub_program.id_sp = beban_realisasi.id_sp AND stat_twrl ='1'  AND sub_program.id_cabang = '$idcabang' AND beban_realisasi.jenis ='bpt' AND sub_program.jenis='beban' ");
+							$listTW = mysqli_query($connect, "SELECT * FROM beban_realisasi, sub_program WHERE sub_program.id_sp = beban_realisasi.id_sp AND stat_twrl ='1'  AND sub_program.id_cabang = '$idcabang' AND beban_realisasi.jenis ='bpll' AND sub_program.jenis='beban'");
 							while($datalistTW = mysqli_fetch_array($listTW)){
 								$idpklist= $datalistTW['id_pk'];
 								$idspklist= $datalistTW['id_sp'];

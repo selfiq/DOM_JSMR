@@ -2,146 +2,155 @@
 include('akses.php'); //untuk memastikan dia sudah login
 include ('connect.php'); //connect ke database
 
-$iduser = $_SESSION['id_user'];
 
-//ambil informasi user id dan cabang id dari table user
-$user = mysqli_fetch_array(mysqli_query($connect,"SELECT * FROM user WHERE id_user = '$iduser' "));
-$idcabang = $user['id_cabang'];
+  $iduser = $_SESSION['id_user'];
 
-//ambil informasi user id dan cabang id dari table cabang
-$cabang =  mysqli_fetch_array(mysqli_query($connect,"SELECT nama_cabang FROM cabang WHERE id_cabang = '$idcabang'"));
-$namacabang = $cabang['nama_cabang'];
+  //ambil informasi user id dan cabang id dari table user
+  $user = mysqli_fetch_array(mysqli_query($connect,"SELECT * FROM user WHERE id_user = '$iduser' "));
+  $idcabang = $user['id_cabang'];
+
+  //ambil informasi user id dan cabang id dari table cabang
+  $cabang =  mysqli_fetch_array(mysqli_query($connect,"SELECT nama_cabang FROM cabang WHERE id_cabang = '$idcabang'"));
+  $namacabang = $cabang['nama_cabang'];
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- include header dari folder templates -->
-<?php include 'templates/head.php' ?>
-<body class="nav-md">
-  <div class="container body">
-    <div class="main_container">
-      <div class="col-md-3 left_col">
-        <div class="left_col scroll-view">
-          <div class="navbar nav_title" style="border: 0;">
-            <a href="home.php" class="site_title"><i class="fa fa-group"></i> <span>Dashboard DOM</span></a>
-          </div>
-          <div class="clearfix"></div>
+  <?php include 'templates/head.php' ?>
 
-          <!-- menu profile quick info -->
-          <?php include'templates/headmenu.php' ?>
-          <!-- /menu profile quick info -->
-          <br />
 
-          <!-- sidebar menu -->
-          <?php include 'templates/sidebarmenu.php' ?>
-          <!-- /sidebar menu -->
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="home.php" class="site_title"><i class="fa fa-group"></i> <span>Dashboard DOM</span></a>
+            </div>
 
-          <!-- /menu footer buttons -->
-          <!-- /menu footer buttons -->
-        </div>
-      </div>
+            <div class="clearfix"></div>
 
-      <!-- top navigation -->
-      <?php include 'topnavigation.php' ?>
-      <!-- /top navigation -->
+            <!-- menu profile quick info -->
+           <?php include'templates/headmenu.php' ?>
+            <!-- /menu profile quick info -->
 
-      <!-- page content -->
-      <div class="right_col" role="main">
-        <!-- top tiles -->
-        <div class="row tile_count">
-          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Total Pengguna</span>
-            <div class="count">2500</div>
-            <span class="count_bottom"><i class="green">4% </i> From last Week</span>
-          </div>
-          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-clock-o"></i> Average Time</span>
-            <div class="count">123.50</div>
-            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
-          </div>
-          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Total Males</span>
-            <div class="count green">2,500</div>
-            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
-          </div>
-          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Total Females</span>
-            <div class="count">4,567</div>
-            <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
-          </div>
-          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Total Collections</span>
-            <div class="count">2,315</div>
-            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
-          </div>
-          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Total Connections</span>
-            <div class="count">7,325</div>
-            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+            <br />
+
+            <!-- sidebar menu -->
+            <?php include 'templates/sidebarmenu.php' ?>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+
+            <!-- /menu footer buttons -->
           </div>
         </div>
-        <!-- /top tiles -->
 
-        <div class="row">
-          <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="dashboard_graph">
-              <div class="row x_title">
-                <div class="col-md-6">
-                  <h3>Network Activities <small>Graph title sub-title</small></h3>
-                </div>
-                <div class="col-md-6">
-                  <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+        <!-- top navigation -->
+        <?php include 'topnavigation.php' ?>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <!-- top tiles -->
+          <div class="row tile_count">
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total Pengguna</span>
+              <div class="count">2500</div>
+              <span class="count_bottom"><i class="green">4% </i> From last Week</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-clock-o"></i> Average Time</span>
+              <div class="count">123.50</div>
+              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total Males</span>
+              <div class="count green">2,500</div>
+              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total Females</span>
+              <div class="count">4,567</div>
+              <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total Collections</span>
+              <div class="count">2,315</div>
+              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total Connections</span>
+              <div class="count">7,325</div>
+              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+            </div>
+          </div>
+          <!-- /top tiles -->
+
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="dashboard_graph">
+
+                <div class="row x_title">
+                  <div class="col-md-6">
+                    <h3>Network Activities <small>Graph title sub-title</small></h3>
+                  </div>
+                  <div class="col-md-6">
+                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                      <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-9 col-sm-9 col-xs-12">
-                <div id="chart_plot_01" class="demo-placeholder"></div>
-              </div>
-              <div class="col-md-3 col-sm-3 col-xs-12 bg-white">
-                <div class="x_title">
-                  <h2>Top Campaign Performance</h2>
-                  <div class="clearfix"></div>
+
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <div id="chart_plot_01" class="demo-placeholder"></div>
                 </div>
-                <div class="col-md-12 col-sm-12 col-xs-6">
-                  <div>
-                    <p>Facebook Campaign</p>
-                    <div class="">
-                      <div class="progress progress_sm" style="width: 76%;">
-                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="80"></div>
+                <div class="col-md-3 col-sm-3 col-xs-12 bg-white">
+                  <div class="x_title">
+                    <h2>Top Campaign Performance</h2>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="col-md-12 col-sm-12 col-xs-6">
+                    <div>
+                      <p>Facebook Campaign</p>
+                      <div class="">
+                        <div class="progress progress_sm" style="width: 76%;">
+                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="80"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <p>Twitter Campaign</p>
+                      <div class="">
+                        <div class="progress progress_sm" style="width: 76%;">
+                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="60"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <p>Twitter Campaign</p>
-                    <div class="">
-                      <div class="progress progress_sm" style="width: 76%;">
-                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="60"></div>
+                  <div class="col-md-12 col-sm-12 col-xs-6">
+                    <div>
+                      <p>Conventional Media</p>
+                      <div class="">
+                        <div class="progress progress_sm" style="width: 76%;">
+                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="40"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <p>Bill boards</p>
+                      <div class="">
+                        <div class="progress progress_sm" style="width: 76%;">
+                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+
                 </div>
-                <div class="col-md-12 col-sm-12 col-xs-6">
-                  <div>
-                    <p>Conventional Media</p>
-                    <div class="">
-                      <div class="progress progress_sm" style="width: 76%;">
-                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="40"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <p>Bill boards</p>
-                    <div class="">
-                      <div class="progress progress_sm" style="width: 76%;">
-                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
                 <div class="clearfix"></div>
               </div>

@@ -13,7 +13,7 @@ include ('connect.php'); //connect ke database
   $cabang =  mysqli_fetch_array(mysqli_query($connect,"SELECT nama_cabang FROM cabang WHERE id_cabang = '$idcabang'"));
   $namacabang = $cabang['nama_cabang'];
 
-  $resultuntukrealisasi = $connect-> query("SELECT * FROM program_kerja WHERE id_cabang = '$idcabang' AND jenis = 'beban' ");
+  $resultuntukrealisasi = $connect-> query("SELECT * FROM program_kerja WHERE id_cabang = '$idcabang' AND jenis = 'capex' ");
 
 ?>
 <!DOCTYPE html>
@@ -75,7 +75,7 @@ include ('connect.php'); //connect ke database
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Monitoring Beban</h3>
+                <h3>Monitoring Capex</h3>
               </div>
 
 
@@ -87,7 +87,7 @@ include ('connect.php'); //connect ke database
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2><i class="fa fa-table"></i> Table <small>Data Beban Cabang <?php echo $namacabang; ?> </small></h2>
+                    <h2><i class="fa fa-table"></i> Table <small>Data Capex Cabang <?php echo $namacabang; ?> </small></h2>
 
                     <div class="clearfix"></div>
                   </div>
@@ -135,13 +135,13 @@ include ('connect.php'); //connect ke database
 						</thead>
 						<tbody>
 							<?php
-							$listTW = mysqli_query($connect, "SELECT * FROM beban_realisasi, sub_program WHERE sub_program.id_sp = beban_realisasi.id_sp AND stat_twrl ='1'  AND sub_program.id_cabang = '$idcabang' AND beban_realisasi.jenis ='bpt' AND sub_program.jenis='beban' ");
+							$listTW = mysqli_query($connect, "SELECT * FROM capex_realisasi, sub_program WHERE sub_program.id_sp = capex_realisasi.id_sp AND stat_twrl ='1'  AND sub_program.id_cabang = '$idcabang' AND capex_realisasi.jenis ='spojt' AND sub_program.jenis='capex' ");
 							while($datalistTW = mysqli_fetch_array($listTW)){
 								$idpklist= $datalistTW['id_pk'];
 								$idspklist= $datalistTW['id_sp'];
 								$tahun= $datalistTW['tahun'];
-								$jmlstakhir = mysqli_query($connect, "SELECT * FROM beban_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun'");
-								$jmlrealisasi = mysqli_query($connect, "SELECT * FROM beban_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun'");
+								$jmlstakhir = mysqli_query($connect, "SELECT * FROM capex_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun'");
+								$jmlrealisasi = mysqli_query($connect, "SELECT * FROM capex_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun'");
 								$qty1 = 0;
 								$qty2 = 0;
 								while ($num = mysqli_fetch_array($jmlstakhir)) {
@@ -150,10 +150,10 @@ include ('connect.php'); //connect ke database
 									$qty2 += $num['realisasi'];}
 								$dataprogramkerja = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_pk = '$idpklist'"));
 								$datasubprogramkerja= mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM sub_program WHERE id_sp = '$idspklist'"));
-								$datatwreal1 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM beban_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrl = '1'"));
-								$datatwreal2 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM beban_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrl = '2'"));
-								$datatwreal3 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM beban_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrl = '3'"));
-								$datatwreal4 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM beban_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrl = '4'"));
+								$datatwreal1 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM capex_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrl = '1'"));
+								$datatwreal2 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM capex_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrl = '2'"));
+								$datatwreal3 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM capex_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrl = '3'"));
+								$datatwreal4 = mysqli_fetch_array(mysqli_query($connect, "SELECT * FROM capex_realisasi WHERE id_sp = '$idspklist' AND tahun = '$tahun' AND stat_twrl = '4'"));
 							?>
 						  <tr>
 							<td><?php echo $dataprogramkerja['nama_pk'] ?></td>
@@ -200,7 +200,7 @@ include ('connect.php'); //connect ke database
 					  <h4 class="modal-title" id="myModalLabel">Tambah Realisasi</h4>
 					</div>
 					<div class="modal-body">
-					  <form action="tambahrealisasibeban.php" method="POST" id="demo-form2"  class="form-horizontal form-label-left">
+					  <form action="tambahrealisasicapex.php" method="POST" id="demo-form2"  class="form-horizontal form-label-left">
 						   <div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="programKerja">Program Kerja</label>
 							<input name ="idcabang" type="text" id="idcabang" value="<?php echo $idcabang; ?>" hidden>
@@ -231,8 +231,8 @@ include ('connect.php'); //connect ke database
 							<div class="col-md-6 col-sm-6 col-xs-12">							   
 								<select required="required" name="jenis" id="jenis-list" class="select2_single form-control" tabindex="-1">
 									<option>Pilih Jenis</option>
-									<option value ="bpt">Beban Pengumpulan Tol</option>
-									<option value ="bpll">Beban Pelayanan Lalu Lintas</option>
+									<option value ="spojt">SPOJT</option>
+									<option value ="spjt">SPJT</option>
 								</select>
 							</div>
 						  </div>

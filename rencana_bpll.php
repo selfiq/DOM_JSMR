@@ -135,7 +135,7 @@ include ('connect.php'); //connect ke database
                             </thead>
                             <tbody>
                             <?php
-                            $listTW = mysqli_query($connect, "SELECT * FROM beban_rencana, sub_program WHERE sub_program.id_sp = beban_rencana.id_sp AND stat_twrc = '1' AND sub_program.id_cabang = '$idcabang' AND beban_rencana.jenis ='bpt' AND sub_program.jenis='beban' ");
+                            $listTW = mysqli_query($connect, "SELECT * FROM beban_rencana, sub_program WHERE sub_program.id_sp = beban_rencana.id_sp AND stat_twrc = '1' AND sub_program.id_cabang = '$idcabang' AND beban_rencana.jenis ='bpll' AND sub_program.jenis='beban' ");
                             while($datalistTW = mysqli_fetch_array($listTW)){
                                 
 								$idpklist = $datalistTW['id_pk'];
@@ -241,7 +241,7 @@ include ('connect.php'); //connect ke database
 
 								<option></option>
 								<?php
-                                    $programkerja = mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_cabang ='$idcabang' AND jenis = 'beban'");
+                                    $programkerja = mysqli_query($connect, "SELECT * FROM program_kerja WHERE id_cabang ='$idcabang' AND jenis = 'beban' ");
                                     while($dataprogram = mysqli_fetch_array($programkerja)){
                                 ?>
 								<option  value="<?php echo $dataprogram['id_pk'];?>"><?php echo $dataprogram['nama_pk'];?></option>
